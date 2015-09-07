@@ -133,7 +133,76 @@ internal class ChartUtils
         (text as NSString).drawAtPoint(point, withAttributes: attributes)
         UIGraphicsPopContext()
     }
-    
+
+    /// Talentoday added. Draw text based on chart size.
+    internal class func drawText(context context: CGContext?, var text: String, var point: CGPoint, align: NSTextAlignment, attributes: [NSObject : AnyObject]?, chartSize:CGSize = CGSizeZero)
+    {
+        let width = text.sizeWithAttributes(attributes as? [String: AnyObject]).width
+        let offsetX = Int(fabs(point.x - chartSize.width/2))
+        var percentOffset = CGFloat(offsetX) / 40
+
+        if percentOffset > 1 {
+            percentOffset = 1
+        }
+        if percentOffset < 0 {
+            percentOffset = 0
+        }
+
+        if point.x < chartSize.width / 2 {
+            if width + 5 > point.x {
+                text = breakText(text)
+            }
+            point.x -= width/2
+            point.x -= width/2 * percentOffset
+        } else {
+            if width + 5 + point.x > chartSize.width {
+                text = breakText(text)
+            }
+            point.x -= width/2 * (1 - percentOffset)
+        }
+
+        if point.y > chartSize.height / 2 {
+            point.y += 10 * (1 - percentOffset)
+        } else {
+            point.y -= 10 * (1 - percentOffset)
+        }
+
+        let drawRect = CGRectMake(point.x, point.y, width, 30)
+
+        UIGraphicsPushContext(context);
+        (text as NSString).drawInRect(drawRect, withAttributes: (attributes as! [String: AnyObject]))
+        UIGraphicsPopContext();
+    }
+
+    /// Talentoday added. Break text on multiple lines
+    internal class func breakText(text:String) -> String {
+        let parts = text.characters.split { $0 == " " }.map(String.init)
+        var newText = parts[0]
+        if parts.count > 1 {
+            let lastWord = parts[parts.count - 1]
+            if parts.count > 2 {
+                for index in 1...parts.count - 2 {
+                    if newText.characters.count < lastWord.characters.count {
+                        newText = newText + " \(parts[index])"
+                    } else {
+                        newText = newText + "\n\(parts[index])"
+                        for j in index + 1...parts.count - 1 {
+                            newText = newText  + " \(parts[j])"
+                        }
+                        continue
+                    }
+                }
+            } else {
+                newText = newText + "\n\(lastWord)"
+            }
+            if newText.rangeOfString(lastWord,
+                options: []) == nil {
+                    newText = newText + "\n\(lastWord)"
+            }
+        }
+        return newText
+    }
+
     internal class func drawMultilineText(context context: CGContext?, text: String, knownTextSize: CGSize, point: CGPoint, align: NSTextAlignment, attributes: [String : AnyObject]?, constrainedToSize: CGSize)
     {
         var rect = CGRect(origin: CGPoint(), size: knownTextSize)

@@ -59,8 +59,18 @@ public class ChartXAxisRendererRadarChart: ChartXAxisRenderer
             let p = ChartUtils.getPosition(center: center, dist: CGFloat(_chart.yRange) * factor + _xAxis.labelWidth / 2.0, angle: angle)
 
             let textColor = (labelTextColorsCount == count) ? labelTextColors[i] : labelTextColor
+            let paragraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
 
-            ChartUtils.drawText(context: context, text: text!, point: CGPoint(x: p.x, y: p.y - _xAxis.labelHeight / 2.0), align: .Center, attributes: [NSFontAttributeName: labelFont, NSForegroundColorAttributeName: textColor!])
+            if p.x < _chart.bounds.width / 2 {
+                paragraphStyle.alignment = NSTextAlignment.Right
+            } else if p.x > _chart.bounds.width / 2 {
+                paragraphStyle.alignment = NSTextAlignment.Left
+            }
+
+            let attributes = [NSFontAttributeName: labelFont, NSForegroundColorAttributeName: textColor!, NSParagraphStyleAttributeName: paragraphStyle]
+
+            /// Call Talentoday added method that supplies `chart` as parameter.
+            ChartUtils.drawText(context: context, text: text!, point: CGPoint(x: p.x, y: p.y - _xAxis.labelHeight / 2.0), align: .Center, attributes: attributes, chartSize: _chart.bounds.size)
         }
     }
     
