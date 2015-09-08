@@ -32,6 +32,9 @@ public protocol ChartViewDelegate
     
     // Callbacks when the chart is moved / translated via drag gesture.
     optional func chartTranslated(chartView: ChartViewBase, dX: CGFloat, dY: CGFloat)
+
+    // Talentoday added. Callback when radar rotates.
+    optional func radarChartDidRotate(angle:CGFloat)
 }
 
 public class ChartViewBase: UIView, ChartAnimatorDelegate

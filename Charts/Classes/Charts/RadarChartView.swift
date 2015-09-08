@@ -159,6 +159,10 @@ public class RadarChartView: PieRadarChartViewBase
     
     public override func drawRect(rect: CGRect)
     {
+
+        // Talentoday added.
+        self.delegate?.radarChartDidRotate?(self.rotationAngle)
+
         super.drawRect(rect)
 
         if (_dataNotSet)
