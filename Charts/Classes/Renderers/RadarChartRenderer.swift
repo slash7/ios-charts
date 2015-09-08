@@ -52,7 +52,8 @@ public class RadarChartRenderer: LineScatterCandleRadarChartRenderer
         let sliceangle = _chart.sliceAngle
         
         // calculate the factor that is needed for transforming the value to pixels
-        let factor = _chart.factor
+        let increaseBy = 1.33 as CGFloat // Talentoday added to increase radar size
+        let factor = _chart.factor * increaseBy
         
         let center = _chart.centerOffsets
         var entries = dataSet.yVals
@@ -175,7 +176,8 @@ public class RadarChartRenderer: LineScatterCandleRadarChartRenderer
         
         // calculate the factor that is needed for transforming the value to
         // pixels
-        let factor = _chart.factor
+        let increaseBy = 1.33 as CGFloat // Talentoday added to increase radar size
+        let factor = _chart.factor * increaseBy
         let rotationangle = _chart.rotationAngle
         
         let center = _chart.centerOffsets
