@@ -210,7 +210,7 @@ public class PieRadarChartViewBase: ChartViewBase
         // Talentoday added
 
         // Design is done on iPhone 6 Plus, calculate scale to use on other devices
-        let scale = UIScreen.mainScreen().bounds.size.width/414
+        let scale = UIDevice.currentDevice().userInterfaceIdiom == .Pad ? 1.5 : UIScreen.mainScreen().bounds.size.width/414
 
         // Radar chart is 220x220 on iPhone 6 Plus, calculate margins
         let chartSize = CGSize(width: scale * 220, height: scale * 220)

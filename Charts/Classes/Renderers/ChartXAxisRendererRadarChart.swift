@@ -61,7 +61,7 @@ public class ChartXAxisRendererRadarChart: ChartXAxisRenderer
             var margin = _xAxis.labelWidth / 2.0 // default margin from ios-charts
 
             // Design is done on iPhone 6 Plus, calculate scale for other devices
-            let scale = UIScreen.mainScreen().bounds.size.width/414
+            let scale = UIDevice.currentDevice().userInterfaceIdiom == .Pad ? 1.5 : UIScreen.mainScreen().bounds.size.width/414
 
             // Reduce default margin by 4
             margin = margin / 4.0 * scale
