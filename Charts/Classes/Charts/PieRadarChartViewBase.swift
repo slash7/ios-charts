@@ -189,22 +189,35 @@ public class PieRadarChartViewBase: ChartViewBase
         legendBottom += self.extraBottomOffset
         legendLeft += self.extraLeftOffset
 
-        var minOffset = CGFloat(10.0)
-        
-        if (self.isKindOfClass(RadarChartView))
-        {
-            let x = (self as! RadarChartView).xAxis
-            
-            if x.isEnabled && x.drawLabelsEnabled
-            {
-                minOffset = max(10.0, x.labelWidth)
-            }
-        }
+// Talentoday Commented
+//        var minOffset = CGFloat(10.0)
+//        
+//        if (self.isKindOfClass(RadarChartView))
+//        {
+//            let x = (self as! RadarChartView).xAxis
+//            
+//            if x.isEnabled && x.drawLabelsEnabled
+//            {
+//                minOffset = max(10.0, x.labelWidth)
+//            }
+//        }
+//
+//        let offsetLeft = max(minOffset, legendLeft)
+//        let offsetTop = max(minOffset, legendTop)
+//        let offsetRight = max(minOffset, legendRight)
+//        let offsetBottom = max(minOffset, max(self.requiredBaseOffset, legendBottom))
 
-        let offsetLeft = max(minOffset, legendLeft)
-        let offsetTop = max(minOffset, legendTop)
-        let offsetRight = max(minOffset, legendRight)
-        let offsetBottom = max(minOffset, max(self.requiredBaseOffset, legendBottom))
+        // Talentoday added
+
+        // Design is done on iPhone 6 Plus, calculate scale to use on other devices
+        let scale = UIScreen.mainScreen().bounds.size.width/414
+
+        // Radar chart is 220x220 on iPhone 6 Plus, calculate margins
+        let chartSize = CGSize(width: scale * 220, height: scale * 220)
+        let offsetLeft = (self.bounds.width - chartSize.width) / 2
+        let offsetTop = (self.bounds.height - chartSize.height) / 2
+        let offsetRight = offsetLeft
+        let offsetBottom = offsetTop
 
         _viewPortHandler.restrainViewPort(offsetLeft: offsetLeft, offsetTop: offsetTop, offsetRight: offsetRight, offsetBottom: offsetBottom)
     }

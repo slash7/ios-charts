@@ -55,8 +55,18 @@ public class ChartXAxisRendererRadarChart: ChartXAxisRenderer
             }
             
             let angle = (sliceangle * CGFloat(i) + _chart.rotationAngle) % 360.0
-            
-            let p = ChartUtils.getPosition(center: center, dist: CGFloat(_chart.yRange) * factor + _xAxis.labelWidth / 2.0, angle: angle)
+
+            // Talentoday added
+            // Calculate margin between label and web
+            var margin = _xAxis.labelWidth / 2.0 // default margin from ios-charts
+
+            // Design is done on iPhone 6 Plus, calculate scale for other devices
+            let scale = UIScreen.mainScreen().bounds.size.width/414
+
+            // Reduce default margin by 4
+            margin = margin / 4.0 * scale
+
+            let p = ChartUtils.getPosition(center: center, dist: CGFloat(_chart.yRange) * factor + margin, angle: angle)
 
             let textColor = (labelTextColorsCount == count) ? labelTextColors[i] : labelTextColor
             let paragraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
